@@ -7,7 +7,7 @@
             {{-- KOLOM 1: Brand & Alamat --}}
             <div class="space-y-6">
                 <div class="flex items-center gap-4">
-                    {{-- Logo: Diberi background putih tipis agar menonjol di latar gelap --}}
+                    {{-- Logo --}}
                     <div class="bg-white p-2 rounded-full h-16 w-16 flex items-center justify-center shadow-lg">
                         <img src="{{ asset('gambar/logo.png') }}" alt="Logo Keripik Nurhayati"
                             class="h-12 w-auto object-contain">
@@ -17,11 +17,16 @@
                         <span class="text-xs text-orange-200 uppercase tracking-widest">Cita Rasa Nusantara</span>
                     </div>
                 </div>
-                <p class="text-gray-300 leading-relaxed max-w-xs">
-                    <i class="fas fa-map-marker-alt text-[#D84315] mr-2"></i>
-                    Indarung, Kecamatan Lubuk Kilangan,<br>
-                    <span class="ml-6">Kota Padang, Sumatera Barat</span>
-                </p>
+
+                {{-- ALAMAT (DIBUAT BISA DIKLIK) --}}
+                <a href="https://www.google.com/maps/place/KERIPIK+NURHAYATI/@-0.9620388,100.4780473,19z/data=!4m12!1m5!3m4!2zMMKwNTcnNDMuMyJTIDEwMMKwMjgnNDMuMyJF!8m2!3d-0.9620388!4d100.478691!3m5!1s0x2fd4b7909027560b:0xc016f4a6c8255f5c!8m2!3d-0.9620106!4d100.4785971!16s%2Fg%2F11ym0bbbyf?hl=en&entry=ttu&g_ep=EgoyMDI2MDEwNy4wIKXMDSoKLDEwMDc5MjA2N0gBUAM%3D"
+                   target="_blank" 
+                   rel="noopener noreferrer"
+                   class="group block text-gray-300 leading-relaxed max-w-xs hover:text-white transition-colors duration-300">
+                    <i class="fas fa-map-marker-alt text-[#D84315] mr-2 group-hover:animate-bounce"></i>
+                    TK Islam Anak Sholeh, Jl. Manunggal Bhakti, Batu Gadang, Kec. Lubuk Kilangan, Kota Padang, Sumatera Barat 25236<br>
+                    <span class="ml-6"></span>
+                </a>
             </div>
 
             {{-- KOLOM 2: Social Media --}}
@@ -72,10 +77,10 @@
                 </h3>
                 <div class="bg-[#5D4037] bg-opacity-50 p-6 rounded-2xl border border-[#6D4C41]">
                     <p class="text-sm text-gray-300 mb-2">Hubungi kami via WhatsApp:</p>
-                    <a href="https://wa.me/62812345678901" target="_blank"
+                    <a href="https://wa.me/6282389312625" target="_blank"
                         class="flex items-center gap-3 text-2xl font-bold text-white hover:text-[#FFAB91] transition-colors">
                         <i class="fab fa-whatsapp text-green-400"></i>
-                        <span>+62 812-3456-789</span>
+                        <span>+62 823-8931-2625</span>
                     </a>
                     <p class="text-xs text-gray-400 mt-4">
                         Senin - Sabtu: 08.00 - 17.00 WIB
