@@ -82,9 +82,33 @@
                             </div>
                         </label>
 
+                        {{-- FORM UPLOAD BUKTI (Dipindah ke kiri bawah agar rapi) --}}
+                        <div class="mt-8 pt-6 border-t border-dashed border-gray-300">
+                            <div class="flex items-center gap-3 mb-4">
+                                <div class="h-8 w-1 bg-[#5D4037] rounded-full"></div>
+                                <h2 class="text-xl font-bold text-[#3E2723]">Bukti Pembayaran <span class="text-sm font-normal text-gray-500">(Wajib)</span></h2>
+                            </div>
+                            
+                            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                                <label class="block mb-2 text-sm font-medium text-gray-700">Upload struk transfer / screenshot QRIS:</label>
+                                <input type="file" name="payment_proof" accept="image/*"
+                                    class="block w-full text-sm text-gray-500
+                                    file:mr-4 file:py-2.5 file:px-4
+                                    file:rounded-xl file:border-0
+                                    file:text-sm file:font-bold
+                                    file:bg-[#5D4037] file:text-white
+                                    hover:file:bg-[#3E2723]
+                                    cursor-pointer border border-gray-300 rounded-xl p-2 bg-gray-50 focus:outline-none focus:ring-2 focus:ring-[#D84315]
+                                " required/>
+                                <p class="text-xs text-gray-400 mt-2 flex items-center gap-1">
+                                    <i class="fas fa-info-circle"></i> Format: JPG, PNG. Maks: 2MB.
+                                </p>
+                            </div>
+                        </div>
+
                     </div>
 
-                    {{-- KOLOM KANAN: QRIS --}}
+                    {{-- KOLOM KANAN: QRIS (MODIFIKASI GAMBAR DISINI) --}}
                     <div class="space-y-6">
                         <div class="flex items-center gap-3 mb-2">
                             <div class="h-8 w-1 bg-[#5D4037] rounded-full"></div>
@@ -93,56 +117,47 @@
 
                         <label class="block cursor-pointer">
                             <input type="radio" name="payment_method" value="QRIS" class="peer sr-only">
-                            <div class="bg-white p-8 rounded-3xl shadow-lg border-2 border-transparent peer-checked:border-[#D84315] text-center relative overflow-hidden peer-checked:bg-orange-50 transition-all">
-                                <div class="absolute top-4 right-4 text-[#D84315] opacity-0 peer-checked:opacity-100 transition-opacity">
-                                    <i class="fas fa-check-circle text-2xl"></i>
+                            <div class="bg-white p-0 rounded-3xl shadow-lg border-2 border-transparent peer-checked:border-[#D84315] text-center relative overflow-hidden peer-checked:bg-orange-50 transition-all">
+                                <div class="absolute top-4 right-4 text-[#D84315] opacity-0 peer-checked:opacity-100 transition-opacity z-10">
+                                    <i class="fas fa-check-circle text-3xl bg-white rounded-full"></i>
                                 </div>
                                 
-                                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Logo_QRIS.svg/1200px-Logo_QRIS.svg.png" alt="Logo QRIS" class="h-8 mx-auto mb-6">
-                                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data={{ $qrisString ?? 'ID1234567890123' }}" alt="QRIS Code" class="mx-auto mix-blend-multiply">
-                                <p class="text-sm font-bold text-[#3E2723] mb-1 mt-4">NMID: ID1234567890123</p>
-                                <p class="text-xs text-gray-500">PT KERIPIK NURHAYATI</p>
+                                {{-- GAMBAR QRIS YANG BARU --}}
+                                <div class="relative">
+                                    <img src="{{ asset('gambar/qris.jpeg') }}" 
+                                         alt="QRIS Code Keripik Nurhayati" 
+                                         class="w-full h-auto object-cover rounded-3xl">
+                                </div>
                             </div>
                         </label>
-                        
-                        {{-- Tombol Konfirmasi --}}
-                    {{-- TAMBAHAN BARU: FORM UPLOAD BUKTI --}}
-        <div class="space-y-2">
-            <div class="flex items-center gap-3 mb-2">
-                <div class="h-8 w-1 bg-[#5D4037] rounded-full"></div>
-                <h2 class="text-xl font-bold text-[#3E2723]">Bukti Pembayaran <span class="text-sm font-normal text-gray-500">(Opsional)</span></h2>
-            </div>
-            
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
-                <label class="block mb-2 text-sm font-medium text-gray-700">Upload struk/bukti transfer jika sudah membayar:</label>
-                <input type="file" name="payment_proof" accept="image/*"
-                    class="block w-full text-sm text-gray-500
-                    file:mr-4 file:py-2 file:px-4
-                    file:rounded-full file:border-0
-                    file:text-sm file:font-bold
-                    file:bg-orange-50 file:text-[#D84315]
-                    hover:file:bg-orange-100
-                    cursor-pointer border border-gray-300 rounded-lg p-2
-                "/>
-                <p class="text-xs text-gray-400 mt-2">*Format: JPG, PNG. Maks: 2MB.</p>
-            </div>
-        </div>
 
-        {{-- Tombol Konfirmasi --}}
-        <div class="bg-[#5D4037] text-white p-6 rounded-2xl shadow-lg text-center mt-6">
-            <h3 class="font-bold text-lg mb-2">Konfirmasi Pembayaran</h3>
-            <p class="text-sm text-orange-100 mb-6">Pastikan metode bayar sudah dipilih.</p>
-            
-            <button type="submit" class="w-full bg-white text-[#5D4037] hover:bg-orange-50 font-bold py-3 px-6 rounded-xl shadow-md transition-all duration-300 transform hover:-translate-y-1">
-                Simpan & Konfirmasi
-            </button>
-        </div>
+                        {{-- Tombol Konfirmasi (Pindah ke Kanan Bawah) --}}
+                        <div class="bg-[#5D4037] text-white p-6 rounded-2xl shadow-lg text-center mt-6">
+                            <h3 class="font-bold text-lg mb-2">Konfirmasi Pembayaran</h3>
+                            <p class="text-sm text-orange-100 mb-6">Pastikan bukti pembayaran sudah diupload.</p>
+                            
+                            <button type="submit" class="w-full bg-white text-[#5D4037] hover:bg-orange-50 font-bold py-3.5 px-6 rounded-xl shadow-md transition-all duration-300 transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                                <span>Kirim Bukti Pembayaran</span>
+                                <i class="fas fa-paper-plane"></i>
+                            </button>
+                        </div>
                     </div>
-                    
 
                 </div>
             </form>
 
         </div>
     </div>
+
+    {{-- Script Copy to Clipboard --}}
+    <script>
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(function() {
+                // Bisa tambahkan Toast Notification disini jika mau
+                alert('Nomor rekening berhasil disalin!');
+            }, function(err) {
+                console.error('Gagal menyalin: ', err);
+            });
+        }
+    </script>
 @endsection
