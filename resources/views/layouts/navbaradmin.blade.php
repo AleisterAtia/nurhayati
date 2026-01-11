@@ -230,19 +230,10 @@
             {{-- Scrollable Content Area --}}
             <main class="flex-1 overflow-x-hidden overflow-y-auto bg-[#FFFBF2] p-6 scroll-smooth">
                 {{-- Flash Message --}}
-                @if (session('success'))
-                    <div class="mb-6 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded shadow-sm flex justify-between items-center animate-fade-in-down"
-                        role="alert">
-                        <div class="flex items-center gap-2">
-                            <i class="fas fa-check-circle"></i>
-                            <p>{{ session('success') }}</p>
-                        </div>
-                        <button onclick="this.parentElement.remove()" class="text-green-700 font-bold hover:text-green-900">&times;</button>
-                    </div>
-                @endif
 
                 @yield('content')
             </main>
+            @include('components.toast')
         </div>
     </div>
 

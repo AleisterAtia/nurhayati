@@ -28,7 +28,7 @@
         </div>
 
         {{-- Notifikasi --}}
-        @if (session('success'))
+        {{-- @if (session('success'))
             <div class="mb-6 bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-lg shadow-sm flex justify-between items-center animate-fade-in-down"
                 role="alert">
                 <div class="flex items-center gap-3">
@@ -41,7 +41,7 @@
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-        @endif
+        @endif --}}
 
         {{-- Card Table --}}
         <div class="bg-white rounded-2xl shadow-sm border border-orange-100 overflow-hidden">

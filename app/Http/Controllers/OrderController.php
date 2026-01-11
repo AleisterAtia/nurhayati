@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Order;
 use Illuminate\Http\Request;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class OrderController extends Controller
 {
@@ -148,10 +149,27 @@ public function updatePaymentMethod(Request $request, $id)
     /**
      * Fungsi Placeholder untuk Export PDF (Agar tidak error saat tombol diklik)
      */
-    public function exportPdf(Request $request)
+public function exportPdf(Request $request)
     {
-        // Nanti logika DOMPDF ditaruh di sini
-        return "Fitur Export PDF belum diinstall. Silakan install DOMPDF terlebih dahulu.";
+        // Ambil Filter Tanggal dari Request
+        $startDate = $request->start_date;
+        $endDate = $request->end_date;
+
+        // Query Data (Sama persis dengan yang di halaman laporan)
+        $query = Order::with('user');
+
+        if ($startDate && $endDate) {
+            $query->whereBetween('created_at', [$startDate, $endDate]);
+        }
+
+        // Ambil semua data (tanpa pagination)
+        $orders = $query->latest()->get();
+
+        // Load View PDF (Pastikan file view ini sudah dibuat di langkah sebelumnya)
+        $pdf = Pdf::loadView('admin.laporan.pdf', compact('orders', 'startDate', 'endDate'));
+
+        // Download File PDF
+        return $pdf->download('Laporan-Pesanan-' . date('Y-m-d-H-i') . '.pdf');
     }
 
     public function destroy(Order $order)
