@@ -6,25 +6,19 @@ use App\Models\User;
 use App\Models\Order;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage; // Pastikan ini ada
 
 class ProductController extends Controller
 {
-    // List produk
+    // ==========================================
+    // DASHBOARD & ADMIN VIEWS
+    // ==========================================
 
-       public function user()
+    public function user()
     {
-        // 1. Menghitung Total User dari Database
         $totalUsers = User::count();
-
-        // 2. Menghitung Total Order (Pastikan Model Order ada)
-        // Jika belum ada tabel orders, ganti angka ini dengan 0 atau data dummy sementara
         $totalOrders = Order::count();
-
-        // 3. Menghitung Total Pendapatan (Revenue)
-        // Asumsi kolom 'total_price' ada di tabel orders dan status 'paid'
         $revenue = Order::where('status', 'completed')->sum('total_amount');
-
-        // 4. Mengambil 5 User Terbaru
         $latestUsers = User::latest()->take(5)->get();
 
         return view('admin.dashboard', compact('totalUsers', 'totalOrders', 'revenue', 'latestUsers'));
@@ -36,126 +30,152 @@ class ProductController extends Controller
         return view('admin.product.kelolaproduct', compact('products'));
     }
 
-    // Form tambah
     public function create()
     {
         return view('admin.product.tambahproduct');
     }
 
-    // Simpan produk
+    // ==========================================
+    // STORE (SIMPAN PRODUK KE STORAGE)
+    // ==========================================
     public function store(Request $request)
-{
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'description' => 'required',
-        'price' => 'required|numeric',
-        'stock' => 'required|integer',
-        'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
-    ]);
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required',
+            'price' => 'required|numeric',
+            'stock' => 'required|integer',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048'
+        ]);
 
-    $data = $request->except('_token');
+        $data = $request->except('_token');
 
-    if ($request->hasFile('image')) {
-        $filename = time() . '.' . $request->image->extension();
-        $request->image->move(public_path('uploads/products'), $filename);
-        $data['image'] = 'uploads/products/' . $filename;
+        if ($request->hasFile('image')) {
+            // Buat nama file unik
+            $filename = time() . '.' . $request->image->extension();
+            
+            // 1. Simpan fisik file ke: storage/app/public/products
+            // Folder 'products' akan otomatis dibuat jika belum ada
+            $request->file('image')->storeAs('products', $filename, 'public');
+            
+            // 2. Simpan path string ke Database: storage/products/namafile.jpg
+            $data['image'] = 'storage/products/' . $filename;
+        }
+
+        Product::create($data);
+
+        return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan');
     }
 
-    Product::create($data);
-
-    return redirect()->route('products.index')->with('success', 'Produk berhasil ditambahkan');
-}
-
-    // Detail produk
     public function show(Product $product)
     {
         return view('admin.product.showproduct', compact('product'));
     }
 
-    // Form edit
     public function edit(Product $product)
     {
         return view('admin.product.editproduct', compact('product'));
     }
 
-    // Update produk
+    // ==========================================
+    // UPDATE (EDIT PRODUK & GANTI GAMBAR)
+    // ==========================================
     public function update(Request $request, Product $product)
-{
-    $request->validate([
-        'name' => 'required|string|max:255',
-        'description' => 'required',
-        'price' => 'required|numeric',
-        'stock' => 'required|integer',
-        'image' => 'nullable|image|mimes:jpg,jpeg,png|max:2048'
-    ]);
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required',
+            'price' => 'required|numeric',
+            'stock' => 'required|integer',
+            'image' => 'nullable|image|mimes:jpg,jpeg,png,webp|max:2048'
+        ]);
 
-    $data = $request->except('_token');
+        $data = $request->except('_token');
 
-    if ($request->hasFile('image')) {
-        $filename = time() . '.' . $request->image->extension();
-        $request->image->move(public_path('uploads/products'), $filename);
-        $data['image'] = 'uploads/products/' . $filename;
+        if ($request->hasFile('image')) {
+            // 1. Upload Gambar Baru
+            $filename = time() . '.' . $request->image->extension();
+            $request->file('image')->storeAs('products', $filename, 'public');
+            $data['image'] = 'storage/products/' . $filename;
 
-        // hapus gambar lama kalau ada
-        if ($product->image && file_exists(public_path($product->image))) {
-            unlink(public_path($product->image));
+            // 2. Hapus Gambar Lama (Cek apakah pakai Storage atau Cara Lama)
+            if ($product->image) {
+                // Hapus prefix 'storage/' untuk mendapatkan path relatif storage
+                $pathInStorage = str_replace('storage/', '', $product->image);
+
+                // Cek di Storage (Cara Baru)
+                if (Storage::disk('public')->exists($pathInStorage)) {
+                    Storage::disk('public')->delete($pathInStorage);
+                }
+                // Cek di Public Uploads (Cara Lama - Legacy Support)
+                elseif (file_exists(public_path($product->image))) {
+                    unlink(public_path($product->image));
+                }
+            }
         }
+
+        $product->update($data);
+
+        return redirect()->route('products.index')->with('success', 'Produk berhasil diperbarui');
     }
 
-    $product->update($data);
-
-    return redirect()->route('products.index')->with('success', 'Produk berhasil diperbarui');
-}
-
-    // Hapus produk
+    // ==========================================
+    // DESTROY (HAPUS PRODUK & GAMBAR)
+    // ==========================================
     public function destroy(Product $product)
     {
+        // Hapus gambar sebelum menghapus data di DB
+        if ($product->image) {
+            $pathInStorage = str_replace('storage/', '', $product->image);
+            
+            // Hapus dari Storage
+            if (Storage::disk('public')->exists($pathInStorage)) {
+                Storage::disk('public')->delete($pathInStorage);
+            } 
+            // Hapus dari Public (Legacy)
+            elseif (file_exists(public_path($product->image))) {
+                unlink(public_path($product->image));
+            }
+        }
+
         $product->delete();
         return redirect()->route('products.index')->with('success', 'Produk berhasil dihapus');
     }
 
-     public function home()
+    // ==========================================
+    // PUBLIC ROUTES (KATALOG & HOME)
+    // ==========================================
+
+    public function home()
     {
-        // Ambil semua data produk dari database
-         $products = Product::orderBy('rating', 'desc')->take(4)->get();
-
-    return view('welcome', compact('products'));
-
-        // Cara lain yang lebih singkat menggunakan compact:
-        // return view('welcome', compact('products'));
+        $products = Product::orderBy('rating', 'desc')->take(4)->get();
+        return view('welcome', compact('products'));
     }
 
-     public function showPublic(Product $product)
+    public function showPublic(Product $product)
     {
-        // Laravel akan otomatis mencari produk berdasarkan {product} di URL
         return view('products.show', compact('product'));
     }
 
- public function catalog(Request $request)
-{
-    // Query builder langsung dimulai tanpa mengambil kategori
-    $query = Product::query();
+    public function catalog(Request $request)
+    {
+        $query = Product::query();
 
-    // Handle Sort (Urutkan)
-    if ($request->filled('urutkan')) {
-        $sort = explode('-', $request->urutkan);
-        if (count($sort) == 2) {
-            $column = $sort[0];
-            $direction = $sort[1];
-            // Validasi kolom untuk keamanan
-            if (in_array($column, ['name', 'price'])) {
-                $query->orderBy($column, $direction);
+        if ($request->filled('urutkan')) {
+            $sort = explode('-', $request->urutkan);
+            if (count($sort) == 2) {
+                $column = $sort[0];
+                $direction = $sort[1];
+                if (in_array($column, ['name', 'price'])) {
+                    $query->orderBy($column, $direction);
+                }
             }
+        } else {
+            $query->latest();
         }
-    } else {
-        // Urutan default
-        $query->latest();
+
+        $products = $query->paginate(12)->withQueryString();
+
+        return view('products.catalog', compact('products'));
     }
-
-    // Eksekusi query dengan paginasi
-    $products = $query->paginate(12)->withQueryString();
-
-    // Kirim data products saja ke view, tanpa categories
-    return view('products.catalog', compact('products'));
-}
 }
