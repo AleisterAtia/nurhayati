@@ -1,4 +1,4 @@
-<footer class="bg-[#3E2723] text-[#FFFBF2] pt-16 pb-8 border-t-4 border-[#D84315]">
+<footer id="footer" class="bg-[#3E2723] text-[#FFFBF2] pt-16 pb-8 border-t-4 border-[#D84315]">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
 
         {{-- Grid Container: 1 Kolom di Mobile, 3 Kolom di Laptop --}}
@@ -37,7 +37,7 @@
                 </h3>
                 <ul class="space-y-4">
                     <li>
-                        <a href="#"
+                        <a href="https://www.instagram.com/keripik_nurhayati313?igsh=MTlmcDhoYW5mZDN1ZA=="
                             class="group flex items-center gap-3 text-gray-300 hover:text-white transition-all duration-300 hover:translate-x-2">
                             <span
                                 class="h-10 w-10 rounded-full bg-[#5D4037] group-hover:bg-[#D84315] flex items-center justify-center transition-colors">

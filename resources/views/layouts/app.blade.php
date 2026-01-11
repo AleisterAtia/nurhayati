@@ -66,11 +66,11 @@
                             class="text-[#5D4037] hover:text-[#D84315] px-1 pt-1 text-sm font-semibold transition duration-150 ease-in-out">
                             Katalog
                         </a>
-                        <a href="#"
+                        {{-- <a href="#"
                             class="text-[#5D4037] hover:text-[#D84315] px-1 pt-1 text-sm font-semibold transition duration-150 ease-in-out">
                             About Us
-                        </a>
-                        <a href="#"
+                        </a> --}}
+                        <a href="#footer"
                             class="text-[#5D4037] hover:text-[#D84315] px-1 pt-1 text-sm font-semibold transition duration-150 ease-in-out">
                             Contact
                         </a>
@@ -169,10 +169,10 @@
                     class="{{ request()->routeIs('home') ? 'bg-orange-50 text-[#D84315]' : 'text-gray-600 hover:bg-gray-50 hover:text-[#D84315]' }} block px-3 py-2 rounded-md text-base font-medium">Home</a>
                 <a href="{{ route('home') }}#produk"
                     class="text-gray-600 hover:bg-gray-50 hover:text-[#D84315] block px-3 py-2 rounded-md text-base font-medium">Katalog</a>
-                <a href="#"
+                {{-- <a href="#"
                     class="text-gray-600 hover:bg-gray-50 hover:text-[#D84315] block px-3 py-2 rounded-md text-base font-medium">About
-                    Us</a>
-                <a href="#"
+                    Us</a> --}}
+                <a href="#footer"
                     class="text-gray-600 hover:bg-gray-50 hover:text-[#D84315] block px-3 py-2 rounded-md text-base font-medium">Contact</a>
             </div>
 
