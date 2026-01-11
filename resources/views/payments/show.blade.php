@@ -62,7 +62,7 @@
                         </label>
 
                         {{-- Bank Mandiri --}}
-                        <label class="block cursor-pointer">
+                        {{-- <label class="block cursor-pointer">
                             <input type="radio" name="payment_method" value="Bank Mandiri" class="peer sr-only">
                             <div class="bg-white p-6 rounded-2xl shadow-sm border-2 border-transparent peer-checked:border-[#D84315] peer-checked:bg-orange-50 hover:shadow-md transition-all group relative overflow-hidden">
                                 <div class="absolute top-4 right-4 text-[#D84315] opacity-0 peer-checked:opacity-100 transition-opacity">
@@ -80,7 +80,7 @@
                                     <button type="button" onclick="copyToClipboard('0987654321')" class="text-sm font-bold text-[#D84315] hover:text-[#BF360C]">SALIN</button>
                                 </div>
                             </div>
-                        </label>
+                        </label> --}}
 
                         {{-- FORM UPLOAD BUKTI (Dipindah ke kiri bawah agar rapi) --}}
                         <div class="mt-8 pt-6 border-t border-dashed border-gray-300">
