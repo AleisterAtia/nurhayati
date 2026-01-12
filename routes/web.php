@@ -119,6 +119,10 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('orders', OrderController::class);
     Route::resource('products', ProductController::class);
 
+    // Fitur Profil Admin
+    Route::get('/profile-admin', [ProfileController::class, 'editAdmin'])->name('profile.admin');
+    Route::put('/profile-admin/update', [ProfileController::class, 'updateAdmin'])->name('profile.admin.update');
+
     // Laporan & Print
     Route::get('/orders/{id}/print-label', [OrderController::class, 'printLabel'])->name('orders.printLabel');
     Route::get('/laporan/pesanan', [OrderController::class, 'laporanPesanan'])->name('laporan.laporanpesanan');

@@ -113,15 +113,18 @@
 
             {{-- Sidebar Footer --}}
             <div class="p-4 border-t border-[#5D4037] bg-[#2D1B15]">
-                <div class="flex items-center gap-3 mb-4 px-2">
-                    <div class="h-10 w-10 rounded-full bg-[#D84315] flex items-center justify-center text-white font-bold border-2 border-[#5D4037]">
-                        {{ strtoupper(substr(Auth::user()->name ?? 'A', 0, 1)) }}
-                    </div>
-                    <div class="overflow-hidden">
-                        <p class="text-sm font-bold text-white truncate">{{ Auth::user()->name ?? 'Admin' }}</p>
-                        <p class="text-xs text-gray-400 truncate">Administrator</p>
-                    </div>
-                </div>
+
+
+                <a href="{{ route('profile.admin') }}" class="flex items-center gap-3 mb-4 px-2 group hover:bg-[#3E2723] p-2 rounded-lg transition-colors cursor-pointer">
+        <div class="h-10 w-10 rounded-full bg-[#D84315] flex items-center justify-center text-white font-bold border-2 border-[#5D4037] group-hover:border-white transition-colors">
+            {{ strtoupper(substr(Auth::user()->name ?? 'A', 0, 1)) }}
+        </div>
+        <div class="overflow-hidden">
+            <p class="text-sm font-bold text-white truncate group-hover:text-[#FFAB91] transition-colors">{{ Auth::user()->name ?? 'Admin' }}</p>
+            <p class="text-xs text-gray-400 truncate">Administrator</p>
+        </div>
+    </a>
+
 
                 <form action="{{ route('logout') }}" method="POST">
                     @csrf

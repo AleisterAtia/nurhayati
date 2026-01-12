@@ -95,4 +95,38 @@ class ProfileController extends Controller
         
         return back()->with('success', 'Alamat berhasil dihapus.');
     }
+
+    public function editAdmin()
+{
+    $user = auth()->user();
+    return view('admin.profile.edit', compact('user'));
+}
+
+public function updateAdmin(Request $request)
+{
+    $user = auth()->user();
+
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+        'current_password' => 'nullable|required_with:new_password',
+        'new_password' => 'nullable|min:8|confirmed',
+    ]);
+
+    // Update Nama & Email
+    $user->name = $request->name;
+    $user->email = $request->email;
+
+    // Update Password jika diisi
+    if ($request->filled('current_password')) {
+        if (!Hash::check($request->current_password, $user->password)) {
+            return back()->withErrors(['current_password' => 'Password saat ini salah']);
+        }
+        $user->password = Hash::make($request->new_password);
+    }
+
+    $user->save();
+
+    return redirect()->route('profile.admin')->with('success', 'Profil admin berhasil diperbarui');
+}
 }
