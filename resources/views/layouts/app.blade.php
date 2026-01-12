@@ -167,7 +167,7 @@
             <div class="pt-2 pb-3 space-y-1 px-4">
                 <a href="{{ route('home') }}"
                     class="{{ request()->routeIs('home') ? 'bg-orange-50 text-[#D84315]' : 'text-gray-600 hover:bg-gray-50 hover:text-[#D84315]' }} block px-3 py-2 rounded-md text-base font-medium">Home</a>
-                <a href="{{ route('home') }}#produk"
+                <a href="{{ route('products.catalog') }}"
                     class="text-gray-600 hover:bg-gray-50 hover:text-[#D84315] block px-3 py-2 rounded-md text-base font-medium">Katalog</a>
                 {{-- <a href="#"
                     class="text-gray-600 hover:bg-gray-50 hover:text-[#D84315] block px-3 py-2 rounded-md text-base font-medium">About
@@ -297,6 +297,40 @@
             });
 
         });
+
+          function slideLeft() {
+            var container = document.getElementById('product-slider');
+            // Geser ke kiri sejauh 250px (cukup sekali perintah, CSS yang akan membuatnya mulus)
+            container.scrollBy({
+                left: -250,
+                behavior: 'smooth'
+            });
+        }
+
+        function slideRight() {
+            var container = document.getElementById('product-slider');
+            // Geser ke kanan sejauh 250px
+            container.scrollBy({
+                left: 250,
+                behavior: 'smooth'
+            });
+        }
+
+        function slideLeft() {
+            const slider = document.getElementById('catalog-slider');
+            if(slider) {
+                // Geser ke KIRI (Negatif) sejauh lebar kartu
+                slider.scrollBy({ left: -300, behavior: 'smooth' });
+            }
+        }
+
+        function slideRight() {
+            const slider = document.getElementById('catalog-slider');
+            if(slider) {
+                // Geser ke KANAN (Positif) sejauh lebar kartu
+                slider.scrollBy({ left: 300, behavior: 'smooth' });
+            }
+        }
     </script>
 
     @stack('scripts')
